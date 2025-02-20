@@ -7,22 +7,18 @@ public class Main {
 		BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
 
 		int N = Integer.parseInt(br.readLine());
-		Set<String> employeeSet = new HashSet<>();
+		TreeSet<String> employeeSet = new TreeSet<>(Collections.reverseOrder());
 
 		while (N-- > 0) {
 			StringTokenizer st = new StringTokenizer(br.readLine(), " ");
-
 			String name = st.nextToken();
-			boolean inOut = st.nextToken().equals("enter"); // true = in , false = out
+			boolean inOut = st.nextToken().equals("enter");
 
-			if (inOut)  employeeSet.add(name);
+			if (inOut) employeeSet.add(name);
 			else employeeSet.remove(name);
 		}
 
-		List<String> employees = new ArrayList<>(employeeSet);
-		employees.sort(Collections.reverseOrder());
-
-		for (String name : employees) {
+		for (String name : employeeSet) {
 			bw.write(name + "\n");
 		}
 		bw.flush();
