@@ -1,42 +1,52 @@
+import java.io.*;
 import java.util.Arrays;
-import java.util.Scanner;
 
-class Main
-{
-    static boolean isExist(int[] arr, int x) {
-        int l = 0, r = arr.length - 1;
-        while (l <= r) {
-            int m = (l + r) / 2;
-            if (arr[m] < x) l = m + 1;
-            else if (arr[m] > x) r = m - 1;
-            else return true;
-        }
-        return false;
-    }
+public class Main {
+	public static void main(String[] args) throws IOException {
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
 
-    public static void main (String[] args) {
-        Scanner sc = new Scanner(System.in);
+		int N = Integer.parseInt(br.readLine());
+		int[] arr = new int[N];
 
-        int N = sc.nextInt();
-        int[] arr = new int[N];
-        for (int i = 0; i < N; i++)
-            arr[i] = sc.nextInt();
+		//입력
+		for (int i = 0; i < N; i++) {
+			arr[i] = Integer.parseInt(br.readLine());
+		}
 
-        int[] sums = new int[N * (N + 1) / 2];
-        int sumIndex = 0;
-        for (int i = 0; i < N; i++)
-            for (int j = i; j < N; j++)
-                sums[sumIndex++] = arr[i] + arr[j];
+		int[] sums = new int[(N * (N - 1)) / 2];
+		int sIndex = 0;
 
-        Arrays.sort(sums);
+		for (int i = 0; i < N; i++)
+			for (int j = i; j < N; j++)
+				sums[sIndex++] = arr[i] + arr[j];
 
-        int ans = -1;
-        for (int i = 0; i < N; i++)
-            for (int j = 0; j < N; j++) {
-                int target = arr[i] - arr[j];
-                if (isExist(sums, target))
-                    ans = Math.max(ans, arr[i]);
-            }
-        System.out.println(ans);
-    }
+		//정렬
+		Arrays.sort(sums);
+
+		int answer = -1;
+		for(int i =0; i < N; i++) {
+			for (int j =0; j <N ;j++){
+				int target = arr[i] - arr[j];
+				if(isOptimal(sums , target))
+					answer = Math.max(answer, arr[i]);
+			}
+		}
+
+
+		bw.write(String.valueOf(answer));
+		bw.flush();
+	}
+
+	static boolean isOptimal(int[] arr , int target) {
+		int left = 0, right =  arr.length -1;
+		while(left <= right) {
+			int middle = (left + right) / 2;
+			if(arr[middle] < target) left = middle + 1;
+			else if(arr[middle] > target) right = middle -1;
+			else return true;
+		}
+		return false;
+	}
+
 }
